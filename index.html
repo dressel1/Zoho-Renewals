@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contract Renewals Dashboard</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0b0d11;--sf:#13151c;--sf2:#1a1d27;--bd:#23262f;--tx:#e8e8ed;--tx2:#9194a1;--mt:#555869;--bl:#4e8ef7;--gn:#34d399;--am:#fbbf24;--rd:#f87171;--pr:#a78bfa;--or:#fb923c}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--bg);color:var(--tx);font-family:'Outfit',sans-serif;-webkit-font-smoothing:antialiased}
+.sh{max-width:1340px;margin:0 auto;padding:28px 24px 60px}
+h1{font-size:30px;font-weight:800;letter-spacing:-.03em;display:flex;align-items:center;gap:12px}
+.dot{width:10px;height:10px;border-radius:50%;background:var(--gn);box-shadow:0 0 12px var(--gn);display:inline-block;animation:pu 2s infinite}
+.sb{color:var(--mt);font-size:13px;margin-top:6px}
+@keyframes pu{0%,100%{opacity:1}50%{opacity:.4}}
+.qt{display:flex;gap:6px;margin:24px 0}
+.qb{padding:10px 26px;border-radius:10px;border:1px solid var(--bd);background:var(--sf);font-family:inherit;font-size:14px;font-weight:600;color:var(--tx2);cursor:pointer}
+.qb:hover{border-color:var(--mt)}
+.qb.on{background:var(--bl);border-color:var(--bl);color:#fff}
+.sts{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-bottom:24px}
+.st{background:var(--sf);border-radius:12px;padding:16px 18px;border-left:3px solid var(--bd)}
+.st .lb{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.07em;color:var(--mt);margin-bottom:6px}
+.st .vl{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700}
+.st .hn{font-size:11px;color:var(--mt);margin-top:2px}
+.cr{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.tg{display:flex;background:var(--sf);border-radius:8px;overflow:hidden;border:1px solid var(--bd)}
+.tg button{padding:8px 18px;border:none;font-family:inherit;font-size:13px;font-weight:500;background:transparent;color:var(--mt);cursor:pointer}
+.tg button.on{background:var(--sf2);color:var(--tx)}
+select.cl{padding:8px 14px;border-radius:8px;border:1px solid var(--bd);background:var(--sf);color:var(--tx2);font-family:inherit;font-size:13px;cursor:pointer}
+.cn{font-size:12px;color:var(--mt);margin-left:8px;font-family:'JetBrains Mono',monospace}
+.tw{background:var(--sf);border-radius:12px;border:1px solid var(--bd);overflow:hidden}
+.ts{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px}
+thead th{padding:12px 14px;text-align:left;font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--mt);border-bottom:1px solid var(--bd);white-space:nowrap;background:var(--sf)}
+tbody tr{border-bottom:1px solid var(--bg)}
+tbody tr:hover{background:var(--sf2)}
+td{padding:10px 14px;white-space:nowrap}
+.up{display:inline-block;padding:3px 10px;border-radius:20px;font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600}
+.ac{font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis}
+.dn{color:var(--tx2);max-width:280px;overflow:hidden;text-overflow:ellipsis;font-size:12px}
+.vc{font-family:'JetBrains Mono',monospace;font-weight:600}
+.om{color:var(--or);font-size:11px;font-weight:700}
+.tg2{display:inline-block;padding:2px 8px;border-radius:12px;font-size:10px;font-weight:600;margin-right:4px}
+.ft{margin-top:14px;padding:12px 16px;background:var(--sf);border-radius:10px;display:flex;justify-content:space-between;font-size:12px;color:var(--mt);flex-wrap:wrap;gap:8px}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script>
+// === DATA ===
+var D=[
+{q:2,e:"2026-04-12",a:"Nielsen",d:"Nielsen - TrueData - Deal 2026",v:199800,c:"USD",o:"Garcia",s:"Closed won",r:1,f:["TrueData"]},
+{q:2,e:"2026-04-14",a:"YouGov",d:"YouGov_renewal_ID_2025",v:42000,c:"GBP",o:"Douiri",s:"Closed won",r:1,f:["Augment"]},
+{q:2,e:"2026-04-15",a:"Raptive (Cafe Media)",d:"Raptive_BidEnrichment_Global_2025",v:630600,c:"USD",o:"Power",s:"Closed won",r:0,f:["Enrich"]},
+{q:2,e:"2026-04-30",a:"Epsilon International UK",d:"Epsilon International_Renewal_2025",v:660000,c:"USD",o:"Douiri",s:"Closed won",r:0,f:[]},
+{q:2,e:"2026-04-30",a:"Semasio",d:"Semasio - Cross-Device (auto-renewal)",v:120000,c:"EUR",o:"Geisler",s:"Closed won",r:1,f:["Augment"]},
+{q:2,e:"2026-04-30",a:"Epsilon International UK",d:"Epsilon Intl UK - Standard Upsell 2025",v:36000,c:"USD",o:"Douiri",s:"Closed won",r:0,f:[]},
+{q:2,e:"2026-04-30",a:"ShareThis",d:"Predactiv_Experian Graph_ID5 ID_2025",v:21000,c:"USD",o:"Gonzales",s:"Closed won",r:0,f:["Augment"]},
+{q:2,e:"2026-04-30",a:"Clinch",d:"Clinch - TrueData - Deal 2026",v:20300,c:"USD",o:"Garcia",s:"Closed won",r:1,f:["TrueData"]},
+{q:2,e:"2026-04-30",a:"Unwind Media",d:"UnwindMedia_Enrich_POCQ12026",v:5000,c:"USD",o:"Power",s:"Closed won",r:0,f:["TrueData"]},
+{q:2,e:"2026-05-09",a:"Freestar",d:"Freestar - TrueData - Deal 2026",v:50000,c:"USD",o:"Power",s:"Closed won",r:0,f:["TrueData"]},
+{q:2,e:"2026-05-09",a:"Appier",d:"Cross Device and ID5 ID Decryption",v:14000,c:"USD",o:"",s:"Closed won",r:0,f:["Optimize"]},
+{q:2,e:"2026-05-30",a:"GumGum",d:"GumGum_POC_Expand_Q12026",v:0,c:"USD",o:"Power",s:"Closed won",r:0,f:["Expand"]},
+{q:2,e:"2026-05-31",a:"GumGum",d:"GumGum_renewal_PG_Global_2025",v:431460,c:"USD",o:"Power",s:"Closed won",r:0,f:["Sync"]},
+{q:2,e:"2026-05-31",a:"Optable",d:"Optable_TD_Distribution_License_Q12026",v:120000,c:"USD",o:"Durkee",s:"Closed won",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"Adswizz",d:"Adswizz INC. - TrueData - Deal 2026",v:110250,c:"USD",o:"Gonzales",s:"Closed won",r:0,f:["TrueData"]},
+{q:2,e:"2026-05-31",a:"Mediarithmics",d:"Mediarithmics_PG_New_EU_APAC_2025",v:73500,c:"EUR",o:"",s:"Closed won",r:0,f:["Augment"]},
+{q:2,e:"2026-05-31",a:"Stroer",d:"Stroer SSP/OSDS_Renewal_ID_DE",v:67200,c:"EUR",o:"Real Mattar",s:"Closed won",r:0,f:["Monetize"]},
+{q:2,e:"2026-05-31",a:"Sabio",d:"Sabio - TrueData - Deal 2026",v:36000,c:"USD",o:"Garcia",s:"Closed won",r:0,f:["TrueData"]},
+{q:2,e:"2026-05-31",a:"GumGum",d:"GumGum - Standard Upsell 2025",v:29760,c:"USD",o:"",s:"Closed won",r:0,f:["Sync"]},
+{q:2,e:"2026-06-04",a:"RTB House",d:"RTB House ID5 ID",v:30376,c:"USD",o:"Spring",s:"Closed won",r:0,f:["Optimize"]},
+{q:2,e:"2026-06-12",a:"Deepsync",d:"Deepsync - TrueData - Deal 2026",v:100000,c:"USD",o:"Garcia",s:"Closed won",r:1,f:["TrueData"]},
+{q:2,e:"2026-06-21",a:"TVN Poland (WBD)",d:"TVN Poland_Renewal_ID_PL_2025",v:160140,c:"USD",o:"",s:"Closed won",r:1,f:["Monetize"]},
+{q:2,e:"2026-06-30",a:"Captify",d:"Captify_Renewal_2025",v:255000,c:"USD",o:"Douiri",s:"Closed won",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"TheTradeDesk Inc.",d:"TTD_TrueData_Data License_JUL25-JUN26",v:187200,c:"USD",o:"Douiri",s:"Closed won",r:1,f:["TrueData"]},
+{q:2,e:"2026-06-30",a:"Longitude Ads",d:"LongitudeAds_BidEnrichment_Q22025",v:180000,c:"USD",o:"",s:"Closed won",r:0,f:["Enrich"]},
+{q:2,e:"2026-06-30",a:"ShareThis",d:"ShareThis_Cross-Sell_CDG_EU",v:168000,c:"USD",o:"Vazquez",s:"Closed won",r:0,f:["Augment"]},
+{q:2,e:"2026-06-30",a:"Symitri",d:"Symitri_New_ID_US_2024",v:155000,c:"USD",o:"Power",s:"Closed won",r:0,f:["Expand","Augment"]},
+{q:2,e:"2026-06-30",a:"ShareThis",d:"ShareThis_InterimRenewal_Global_2026",v:144000,c:"USD",o:"Vazquez",s:"Closed won",r:0,f:["Augment"]},
+{q:2,e:"2026-06-30",a:"Experian UK",d:"ExperianUK_Renewal_DeviceGraph_UK_2025",v:126000,c:"USD",o:"Douiri",s:"Closed won",r:0,f:["Augment"]},
+{q:2,e:"2026-06-30",a:"Nexxen",d:"Nexxen_Upsell_CDG_DE_UK_2025-2026",v:110000,c:"USD",o:"Douiri",s:"Closed won",r:0,f:["Optimize"]},
+{q:2,e:"2026-06-30",a:"Mediavine",d:"Mediavine_TrueData_US Linkage",v:60000,c:"USD",o:"Power",s:"Closed won",r:1,f:["TrueData"]},
+{q:2,e:"2026-06-30",a:"Experian NA",d:"Experian_Global Agreement_2024",v:31500,c:"USD",o:"",s:"Closed won",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Semasio",d:"Samba.tv_Experian Graph_ID5 ID_2025",v:29750,c:"USD",o:"Douiri",s:"Closed won",r:0,f:["Augment"]},
+{q:2,e:"2026-06-30",a:"Nexxen",d:"Nexxen_Upsell_ID_Global_2025-2026",v:0,c:"USD",o:"Vazquez",s:"Closed won",r:0,f:["Optimize"]},
+{q:2,e:"2026-06-30",a:"Experian - Tapad",d:"Experian Tapad Switchboard 2026 Extension",v:0,c:"USD",o:"Gonzales",s:"Closed won",r:0,f:[]},
+{q:2,e:"2026-04-30",a:"Snowflake",d:"Snowflake_Global Agreement_2025",v:0,c:"USD",o:"",s:"Solution Scoping",r:0,f:[]},
+{q:2,e:"2026-04-30",a:"Optable",d:"Optable_Reseller Agreement_2025",v:0,c:"USD",o:"",s:"Negotiation",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"TrueData",d:"TrueData_Global Agreement_2024",v:0,c:"USD",o:"Douiri",s:"Negotiation",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"Adstra",d:"Adstra CDP_Global Agreement_2024",v:0,c:"USD",o:"Douiri",s:"Discovery",r:0,f:["TrueData"]},
+{q:2,e:"2026-05-31",a:"Data Axle",d:"Data Axle_Global Agreement_2025",v:0,c:"USD",o:"",s:"Prospecting",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"Aqfer",d:"Aqfer_Global Agreement_2025",v:0,c:"USD",o:"",s:"Engaged",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"Snowplow",d:"Snowplow_Global Agreement_2025",v:0,c:"USD",o:"",s:"Engaged",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"TheTradeDesk - UK",d:"TTD_Identity Alliance_APAC",v:0,c:"USD",o:"",s:"Solution Scoping",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"Contentstack",d:"ContentStack_Lytics CDP_Agreement",v:0,c:"USD",o:"Douiri",s:"Engaged",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"Amazon (AMC)",d:"Amazon AMC_Cloud Facilitator",v:0,c:"USD",o:"",s:"Discovery",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"Amazon (APC)",d:"Amazon APC_Cloud Facilitator",v:0,c:"USD",o:"",s:"Discovery",r:0,f:[]},
+{q:2,e:"2026-05-31",a:"Valiuz",d:"Valiuz_ID5 JS+Decrypt",v:11300,c:"EUR",o:"",s:"Negotiation",r:0,f:["Monetize"]},
+{q:2,e:"2026-06-26",a:"Grupo Cristaliza",d:"Beyup",v:2468,c:"EUR",o:"",s:"Solution Scoping",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Salesforce",d:"Salesforce CDP_Global Agreement_2024",v:0,c:"USD",o:"Douiri",s:"Solution Scoping",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Treasure Data",d:"Treasure Data_Global Agreement_2024",v:0,c:"USD",o:"Douiri",s:"Engaged",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"ArcSpan",d:"ArcSpan CDG (POC)",v:5000,c:"USD",o:"Spring",s:"Negotiation",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Kicker",d:"Cross Device Graph and Decrypt",v:6000,c:"EUR",o:"",s:"Negotiation",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Copper 6",d:"Real Time bid enrichment",v:5000,c:"EUR",o:"",s:"Discovery",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Odeeo",d:"Bid enrichment",v:5000,c:"USD",o:"",s:"Discovery",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Stingray",d:"Bid enrichment",v:5000,c:"EUR",o:"",s:"Discovery",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Kueez Entertainment",d:"Sync Kueez",v:5000,c:"USD",o:"",s:"Discovery",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Audion",d:"Signal Onboarding",v:5000,c:"USD",o:"",s:"Discovery",r:0,f:[]},
+{q:2,e:"2026-06-30",a:"Cybba",d:"Cybba - Foot traffic attribution",v:3000,c:"USD",o:"Garcia",s:"Discovery",r:0,f:["TrueData"]},
+{q:3,e:"2026-07-02",a:"Unwind Media",d:"Unwind Media - TrueData - Deal 2026",v:24000,c:"USD",o:"Power",s:"Closed won",r:0,f:["TrueData"]},
+{q:3,e:"2026-07-11",a:"People Inc. (Dotdash Meredith)",d:"DotDashMeredith_BidEnrichment_Q32025",v:564985,c:"USD",o:"",s:"Closed won",r:0,f:["Enrich"]},
+{q:3,e:"2026-07-18",a:"Strategus Labs",d:"Strategus - TrueData - Deal 2026",v:120093,c:"USD",o:"Garcia",s:"Closed won",r:1,f:["TrueData"]},
+{q:3,e:"2026-07-31",a:"LiveRamp",d:"LiveRamp_TrueData_Data Licensing",v:700000,c:"USD",o:"Garcia",s:"Closed won",r:1,f:["TrueData"]},
+{q:3,e:"2026-07-31",a:"Mediavine",d:"Mediavine_Renewal_2025",v:540000,c:"USD",o:"Power",s:"Closed won",r:0,f:["TrueData"]},
+{q:3,e:"2026-07-31",a:"MobileFuse",d:"MobileFuse_Experian Graph_ID5 ID_2025",v:42000,c:"USD",o:"Gonzales",s:"Closed won",r:0,f:["TrueData"]},
+{q:3,e:"2026-07-31",a:"Raptive (Cafe Media)",d:"Raptive GPID Renewal 2025/2026",v:12000,c:"USD",o:"Power",s:"Closed won",r:0,f:["Enrich"]},
+{q:3,e:"2026-07-31",a:"Nativo",d:"Nativo License ID Graph POC",v:7500,c:"USD",o:"Vazquez",s:"Closed won",r:0,f:["TrueData"]},
+{q:3,e:"2026-07-31",a:"Piano",d:"Piano_Global Agreement_2025",v:0,c:"USD",o:"Douiri",s:"Closed won",r:0,f:[]},
+{q:3,e:"2026-08-31",a:"Otto Media Group",d:"OttoGroup_POC_Conversion_ID_DACH",v:255240,c:"USD",o:"Real Mattar",s:"Closed won",r:0,f:["Augment"]},
+{q:3,e:"2026-09-09",a:"Analytics-IQ",d:"Analytics-IQ - TrueData - Deal 2026",v:160650,c:"USD",o:"Garcia",s:"Closed won",r:1,f:["TrueData"]},
+{q:3,e:"2026-09-30",a:"Walmart Mexico",d:"WalmartMexico_POC Conversion_ID5ID",v:314726,c:"USD",o:"Garcia",s:"Closed won",r:0,f:[]},
+{q:3,e:"2026-09-30",a:"Adsquare",d:"Adsquare_Renewal_CDG_EU_2025-2026",v:228000,c:"USD",o:"Geisler",s:"Closed won",r:1,f:["Augment"]},
+{q:3,e:"2026-09-30",a:"MediaWallah",d:"MediaWallah - TrueData - Deal 2026",v:180006,c:"USD",o:"Garcia",s:"Closed won",r:1,f:["TrueData"]},
+{q:3,e:"2026-09-30",a:"Axel Springer",d:"Axel Springer - ID5 ID",v:168000,c:"USD",o:"Geisler",s:"Closed won",r:0,f:[]},
+{q:3,e:"2026-09-30",a:"Transunion",d:"Transunion_Neustar_Conversion_ID5ID",v:145152,c:"USD",o:"Vazquez",s:"Closed won",r:0,f:["Augment"]},
+{q:3,e:"2026-09-30",a:"Scribd",d:"Scribd - TrueData - Deal 2026",v:135000,c:"USD",o:"Garcia",s:"Closed won",r:1,f:["TrueData"]},
+{q:3,e:"2026-09-30",a:"StackAdapt",d:"Stackadapt_New_ID_B2B_EMEA_2025",v:120000,c:"USD",o:"Power",s:"Closed won",r:0,f:["Optimize"]},
+{q:3,e:"2026-07-11",a:"SoundCast",d:"Signal onboarding",v:7500,c:"USD",o:"",s:"Discovery",r:0,f:[]},
+{q:3,e:"2026-07-19",a:"Digital Audience",d:"Cookie Sync",v:4800,c:"USD",o:"",s:"Negotiation",r:0,f:[]},
+{q:3,e:"2026-07-31",a:"Digital Turbine",d:"Digital turbine - CDG",v:16000,c:"EUR",o:"",s:"Solution Scoping",r:0,f:[]},
+{q:3,e:"2026-07-31",a:"tvScientific",d:"tvScientific_Optimize_POC",v:30000,c:"USD",o:"Real Mattar",s:"Solution Scoping",r:0,f:["Optimize"]},
+{q:3,e:"2026-07-31",a:"Adara",d:"Adara signal onboarding",v:10000,c:"EUR",o:"",s:"Discovery",r:0,f:[]},
+{q:3,e:"2026-07-31",a:"Impactify",d:"Impactify Cookie Sync and Cookieless",v:5032,c:"EUR",o:"",s:"Discovery",r:0,f:["Enrich","Sync"]},
+{q:3,e:"2026-07-31",a:"Escala X",d:"Escala X Enrich",v:0,c:"EUR",o:"",s:"Discovery",r:0,f:["Enrich"]},
+{q:3,e:"2026-08-31",a:"GrowthCode",d:"GrowthCode_BidEnrichment_NA_POC",v:36168,c:"USD",o:"Real Mattar",s:"Proposal Sent",r:0,f:["Enrich"]},
+{q:3,e:"2026-08-31",a:"Adkaora",d:"Adkaora - Bid Enrichment",v:5000,c:"EUR",o:"",s:"Discovery",r:0,f:[]},
+{q:3,e:"2026-08-31",a:"Flipp",d:"Measurement",v:10000,c:"USD",o:"",s:"Discovery",r:0,f:[]},
+{q:3,e:"2026-08-31",a:"Ads Interactive",d:"Ads Interactive RTBE",v:0,c:"EUR",o:"",s:"Engaged",r:0,f:[]},
+{q:3,e:"2026-09-15",a:"SXM / Adswizz",d:"SXM - CDG - POC - 3Q26",v:0,c:"USD",o:"Gonzales",s:"Prospecting",r:0,f:[]},
+{q:3,e:"2026-09-30",a:"Havas Media Group",d:"Havas_EDF_retargeting_ID5 ID",v:20000,c:"USD",o:"Spring",s:"Engaged",r:0,f:[]},
+{q:3,e:"2026-09-30",a:"Raptive (Cafe Media)",d:"Raptive_Monetize Upsell_Q1 2026",v:3033,c:"USD",o:"Power",s:"Engaged",r:0,f:["Enrich"]},
+{q:3,e:"2026-09-30",a:"InMobi",d:"Inmobi SSP Enrichment",v:0,c:"USD",o:"",s:"Discovery",r:0,f:[]}
+];
+ 
+// === ENGINE ===
+var NOW=new Date("2026-04-08");
+function daysTil(e){return Math.ceil((new Date(e)-NOW)/864e5)}
+function uc(e){var d=daysTil(e);return d<=14?"#f87171":d<=30?"#fbbf24":d<=60?"#4e8ef7":"#555869"}
+function ul(e){var d=daysTil(e);return d<=0?"EXPIRED":d<=14?d+"d — URGENT":d+"d"}
+function fm(n,c){if(!n)return"—";var s=c==="GBP"?"£":c==="EUR"?"€":"$";return s+n.toLocaleString()}
+ 
+var state={quarter:2,view:"won",sort:"date",owner:"all"};
+ 
+function render(){
+  var qd=D.filter(function(x){return x.q===state.quarter});
+  var won=qd.filter(function(x){return x.s==="Closed won"});
+  var pipe=qd.filter(function(x){return x.s!=="Closed won"});
+  var list=state.view==="won"?won.slice():pipe.slice();
+ 
+  if(state.owner!=="all") list=list.filter(function(x){return(x.o||"Unassigned")===state.owner});
+  if(state.sort==="date") list.sort(function(a,b){return a.e.localeCompare(b.e)});
+  if(state.sort==="value") list.sort(function(a,b){return(b.v||0)-(a.v||0)});
+  if(state.sort==="owner") list.sort(function(a,b){return(a.o||"ZZZ").localeCompare(b.o||"ZZZ")});
+ 
+  var owners={};
+  (state.view==="won"?won:pipe).forEach(function(x){owners[x.o||"Unassigned"]=1});
+  var ownerList=Object.keys(owners).sort();
+ 
+  var tv=won.reduce(function(s,x){return s+(x.v||0)},0);
+  var ac=won.filter(function(x){return x.r}).length;
+  var uc2=won.filter(function(x){return daysTil(x.e)<=14}).length;
+  var no=won.filter(function(x){return!x.o}).length;
+ 
+  var h='<div class="sh">';
+  h+='<div style="margin-bottom:32px"><h1><span class="dot"></span> Contract Renewals</h1>';
+  h+='<div class="sb">Zoho CRM snapshot — April 8, 2026</div></div>';
+ 
+  // Quarter tabs
+  h+='<div class="qt">';
+  h+='<button class="qb'+(state.quarter===2?" on":"")+'" onclick="setQ(2)">Q2 2026 <span style="font-size:11px;opacity:.6;margin-left:6px">Apr–Jun</span></button>';
+  h+='<button class="qb'+(state.quarter===3?" on":"")+'" onclick="setQ(3)">Q3 2026 <span style="font-size:11px;opacity:.6;margin-left:6px">Jul–Sep</span></button>';
+  h+='</div>';
+ 
+  // Stats
+  var cards=[
+    {l:"Won Deals",v:won.length,n:"contracts expiring",c:"var(--bl)"},
+    {l:"Total Value",v:"$"+(tv/1e6).toFixed(1)+"M",n:"mixed currencies",c:"var(--gn)"},
+    {l:"Auto-Renew",v:ac,n:"will auto-roll",c:"var(--pr)"},
+    {l:"Pipeline",v:pipe.length,n:"still in progress",c:"var(--am)"},
+    {l:"Urgent",v:uc2,n:"≤ 14 days left",c:"var(--rd)"},
+    {l:"No Owner",v:no,n:"needs assignment",c:"var(--or)"}
+  ];
+  h+='<div class="sts">';
+  cards.forEach(function(cd){
+    h+='<div class="st" style="border-left-color:'+cd.c+'">';
+    h+='<div class="lb">'+cd.l+'</div>';
+    h+='<div class="vl" style="color:'+cd.c+'">'+cd.v+'</div>';
+    h+='<div class="hn">'+cd.n+'</div></div>';
+  });
+  h+='</div>';
+ 
+  // Controls
+  h+='<div class="cr">';
+  h+='<div class="tg">';
+  h+='<button class="'+(state.view==="won"?"on":"")+'" onclick="setV(\'won\')">Closed Won</button>';
+  h+='<button class="'+(state.view==="pipeline"?"on":"")+'" onclick="setV(\'pipeline\')">Pipeline</button>';
+  h+='</div>';
+  h+='<select class="cl" onchange="setSt(this.value)">';
+  h+='<option value="date"'+(state.sort==="date"?" selected":"")+'>Sort: End Date</option>';
+  h+='<option value="value"'+(state.sort==="value"?" selected":"")+'>Sort: Value</option>';
+  h+='<option value="owner"'+(state.sort==="owner"?" selected":"")+'>Sort: Owner</option>';
+  h+='</select>';
+  h+='<select class="cl" onchange="setO(this.value)">';
+  h+='<option value="all"'+(state.owner==="all"?" selected":"")+'>All Owners</option>';
+  ownerList.forEach(function(o){h+='<option value="'+o+'"'+(state.owner===o?" selected":"")+'>'+o+'</option>'});
+  h+='</select>';
+  h+='<span class="cn">'+list.length+' deals</span>';
+  h+='</div>';
+ 
+  // Table
+  h+='<div class="tw"><div class="ts"><table>';
+  h+='<thead><tr><th>Urgency</th><th>End Date</th><th>Account</th><th>Deal</th><th>Value</th><th>Owner</th><th>Flags</th></tr></thead>';
+  h+='<tbody>';
+  if(!list.length) h+='<tr><td colspan="7" style="padding:40px;text-align:center;color:var(--mt)">No deals match filters</td></tr>';
+  list.forEach(function(x){
+    var clr=uc(x.e);
+    var vc2=x.v>100000?"var(--gn)":x.v>0?"var(--tx2)":"var(--mt)";
+    h+='<tr>';
+    h+='<td><span class="up" style="background:'+clr+'18;color:'+clr+'">'+ul(x.e)+'</span></td>';
+    h+='<td style="font-family:JetBrains Mono,monospace;font-size:12px;color:var(--tx2)">'+x.e+'</td>';
+    h+='<td class="ac">'+x.a+'</td>';
+    h+='<td class="dn">'+x.d+'</td>';
+    h+='<td class="vc" style="color:'+vc2+'">'+fm(x.v,x.c)+'</td>';
+    h+='<td>'+(x.o?'<span style="color:var(--tx2)">'+x.o+'</span>':'<span class="om">⚠ UNASSIGNED</span>')+'</td>';
+    h+='<td>';
+    if(x.r) h+='<span class="tg2" style="background:rgba(167,139,250,.12);color:var(--pr)">AUTO</span>';
+    if(state.view==="pipeline") h+='<span class="tg2" style="background:rgba(251,191,36,.1);color:var(--am)">'+x.s+'</span>';
+    x.f.forEach(function(t){h+='<span class="tg2" style="background:rgba(78,142,247,.1);color:var(--bl)">'+t+'</span>'});
+    h+='</td></tr>';
+  });
+  h+='</tbody></table></div></div>';
+ 
+  h+='<div class="ft"><span>Zoho CRM Deals module — Contract_End_Date field</span><span>Values in original currency — not normalised to USD</span></div>';
+  h+='</div>';
+ 
+  document.getElementById("root").innerHTML=h;
+}
+ 
+function setQ(n){state.quarter=n;state.owner="all";render()}
+function setV(v){state.view=v;state.owner="all";render()}
+function setSt(v){state.sort=v;render()}
+function setO(v){state.owner=v;render()}
+ 
+render();
+</script>
+</body>
+</html>
+ 
